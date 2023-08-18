@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gap Analysis Amaris ACT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='./styles.css') }}">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='logoamaris.png') }}" alt="Logo Amaris">
+        <h1>Gap Analysis Amaris ACT</h1>
+    </header>
+    <div id="left-container">
+        <h1>Productivity vs Hub Planner</h1>
+
+        <div id="file-upload-container">
+            <form id="productivity-form" enctype="multipart/form-data">
+                <label for="productivity_file">Charger le fichier Productivity :</label><br/>
+                <input type="file" name="productivity_file" id="productivity_file" onchange="uploadProductivity()">
+            </form>
+
+            <form id="hubplanner-form" enctype="multipart/form-data">
+                <label for="hubplanner_file">Charger le fichier HubPlanner :</label><br/>
+                <input type="file" name="hubplanner_file" id="hubplanner_file" onchange="uploadHubPlanner()">
+            </form>
+        </div>
+
+        <form id="date-form">
+            <label for="start_date">Date de début :</label>
+            <input type="date" name="start_date" id="start_date">
+            <br/>
+            <label for="end_date">Date de fin :</label>
+            <input type="date" name="end_date" id="end_date">
+            <br/><br/>
+            <input type="button" value="Submit" onclick="submitForm()">
+        </form>
+    </div>
+
+    <div id="right-container">
+        <h1>Productivity vs Timesheet</h1>
+
+
+        <form id="productivity1-form" enctype="multipart/form-data">
+            <label for="productivity1_file">Charger le fichier Productivity :</label><br/>
+            <input type="file" name="productivity1_file" id="productivity1_file" onchange="uploadProductivity1()">
+        </form>
+
+        <form id="timesheet-form" enctype="multipart/form-data"> <!-- Correction: Renommer l'id du formulaire -->
+            <label for="timesheet_file">Charger le fichier Timesheet :</label><br/>
+            <input type="file" name="timesheet_file" id="timesheet_file" onchange="uploadTimesheet()"> <!-- Correction: Utiliser "uploadTimesheet()" -->
+        </form>
+
+        <label>Choisir le mois concerné</label>
+        <select id="month-selector">
+            <option value="january">january</option>
+            <option value="february">february</option>
+            <option value="march">march</option>
+            <option value="april">april</option>
+            <option value="may">may</option>
+            <option value="june">june</option>
+            <option value="july">july</option>
+            <option value="august">august</option>
+            <option value="september">september</option>
+            <option value="october">october</option>
+            <option value="november">november</option>
+            <option value="december">december</option>
+            <!-- ... (ajoutez les autres mois de la même manière) -->
+        </select>
+        <br/>
+        <form id="compare-timesheet-form"> <!-- Correction: Renommer l'id du formulaire -->
+            <input type="button" value="Submit" onclick="submitFormTimesheet()">
+        </form>
+        <br/>
+    </div>
+    <script>
+        function uploadProductivity() {
+            const fileInput = document.getElementById("productivity_file");
+            const file = fileInput.files[0];
+            const form = new FormData();
+            form.append("productivity_file", file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/load_productivity", true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(form);
+        }
+
+        
+        function uploadProductivity1() {
+            const fileInput = document.getElementById("productivity1_file");
+            const file = fileInput.files[0];
+            const form = new FormData();
+            form.append("productivity1_file", file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/load_productivity1", true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(form);
+        }        
+        
+        
+        
+        
+        
+        function uploadHubPlanner() {
+            const fileInput = document.getElementById("hubplanner_file");
+            const file = fileInput.files[0];
+            const form = new FormData();
+            form.append("hubplanner_file", file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/load_hubplanner", true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(form);
+        }
+
+    
+
+        function submitForm() {
+            const startDateInput = document.getElementById("start_date");
+            const startDate = startDateInput.value;
+
+            const endDateInput = document.getElementById("end_date");
+            const endDate = endDateInput.value;
+
+            const form = new FormData();
+            form.append("start_date", startDate);
+            form.append("end_date", endDate);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/compare_files", true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Télécharger automatiquement le fichier Excel lorsque la réponse est reçue
+                    const blob = new Blob([xhr.response], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "gap_analysis.xlsx";
+                    a.click();
+                }
+            };
+            xhr.responseType = "arraybuffer"; // Demande au serveur de renvoyer les données en tant que ArrayBuffer
+            xhr.send(form);
+        }
+
+        function uploadTimesheet() {
+        const fileInput = document.getElementById("timesheet_file");
+        const file = fileInput.files[0];
+        const form = new FormData();
+        form.append("timesheet_file", file);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/load_timesheet", true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send(form);
+    }
+
+    function submitFormTimesheet() {
+    const selectedMonth = document.getElementById("month-selector").value;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/compare_timesheet_files", true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            const blob = new Blob([xhr.response], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "gap_analysis_timesheet.xlsx";
+            a.click();
+        }
+    };
+    xhr.responseType = "arraybuffer";
+    const formData = new FormData();
+    formData.append("selected_month", selectedMonth);
+    xhr.send(formData);
+}
+
+
+        
+
+    </script>
+</body>
+</html>

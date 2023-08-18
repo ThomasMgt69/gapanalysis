@@ -1,0 +1,99 @@
+/* Styles pour le corps de la page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+/* Styles pour l'en-tête */
+header {
+    background-color: #00205b;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    margin: 0;
+    padding: 0;
+}
+
+header img {
+    width: 120px; /* Augmenter la taille du logo */
+    height: 120px; /* Augmenter la taille du logo */
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajouter une ombre portée */
+    border-radius: 50%; /* Rendre le logo rond (si le logo est carré) */
+}
+/* Styles pour les boutons */
+input[type="button"] {
+    background-color: #00205b;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover {
+    background-color: #003b89;
+}
+
+
+/* Styles pour la partie gauche */
+#left-container {
+    width: 50%;
+    float: left;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Aligne les éléments horizontalement au centre */
+    justify-content: center; /* Aligne les éléments verticalement au centre */
+}
+
+/* Styles pour la partie droite */
+#right-container {
+    width: 50%;
+    float: left;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Aligne les éléments horizontalement au centre */
+    justify-content: center; /* Aligne les éléments verticalement au centre */
+}
+
+
+/* Media query pour les écrans plus petits */
+@media (max-width: 768px) {
+    #left-container,
+    #right-container {
+        width: 100%; /* Change la largeur à 100% */
+        float: none; /* Annule le flottement */
+    }
+}
+
+/* Styles pour le formulaire */
+form {
+    margin-bottom: 20px;
+    text-align: center; /* Aligne le contenu du formulaire au centre */
+}
+
+/* Styles pour les boutons à l'intérieur du formulaire */
+form input[type="button"] {
+    margin-top: 10px; /* Ajoute un espace entre les champs et le bouton */
+}
+
+
+
+
+
